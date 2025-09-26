@@ -3,22 +3,23 @@
 import { useState } from "react"
 
 export function HandDrawn() {
-  const [activeTab, setActiveTab] = useState("demo")
-  const [activeNav, setActiveNav] = useState("reverse")
+  const [isLoading, setIsLoading] = useState(false)
 
-  const tabs = [
-    { id: "claudecode-2", name: "ClaudeCode - 2" },
-    { id: "claudecode-1", name: "ClaudeCode - 1" },
-    { id: "demo", name: "demo" },
+  const commits = [
+    { id: 1, message: "Initial project setup", tool: "bash", time: "2024-01-15 14:30" },
+    { id: 2, message: "Add authentication system", tool: "task", time: "2024-01-15 10:45" },
+    { id: 3, message: "Implement user dashboard", tool: "read", time: "2024-01-15 08:20" },
+    { id: 4, message: "Fix responsive layout issues", tool: "edit", time: "2024-01-15 06:15" },
+    { id: 5, message: "Add dark mode support", tool: "create", time: "2024-01-15 04:10" },
   ]
 
-  const navItems = [
-    { id: "static", name: "Static", subtitle: "(Bottom-Up)" },
-    { id: "reverse", name: "Static Reverse", subtitle: "(Top-Down)" },
-  ]
+  const handleLoadData = () => {
+    setIsLoading(true)
+    setTimeout(() => setIsLoading(false), 3000)
+  }
 
   return (
-    <div className="hand-drawn min-h-screen bg-amber-50 relative">
+    <div className="hand-drawn min-h-screen bg-amber-50 relative w-full">
       {/* Paper texture background */}
       <div
         className="absolute inset-0 opacity-30"
@@ -27,156 +28,215 @@ export function HandDrawn() {
         }}
       ></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-8">
-        {/* Header Sketchy Card */}
+      <div className="relative z-10 max-w-4xl mx-auto px-6 py-8">
+        <div className="flex justify-center mb-8">
+          <button
+            onClick={handleLoadData}
+            disabled={isLoading}
+            className="bg-yellow-300 hover:bg-yellow-400 disabled:bg-yellow-200 text-gray-900 font-bold px-6 py-3 border-3 border-gray-800 transition-all duration-300 transform hover:rotate-[1deg] hover:scale-105 disabled:opacity-50"
+            style={{
+              fontFamily: "Comic Sans MS, cursive, sans-serif",
+              borderRadius: "15px 20px 18px 16px",
+              boxShadow: "3px 3px 0px #d4a574, 6px 6px 0px #b8956a",
+            }}
+          >
+            {isLoading ? "Loading... ⏳" : "Refresh Data 🔄"}
+          </button>
+        </div>
+
         <div
-          className="bg-white rounded-lg p-8 mb-8 relative transform rotate-[-0.5deg] shadow-lg border-2 border-gray-800"
+          className="bg-white rounded-lg border-3 border-gray-800 shadow-lg overflow-hidden transform rotate-[0.3deg]"
           style={{
-            borderRadius: "15px 25px 20px 18px",
-            boxShadow: "3px 3px 0px #d4a574, 6px 6px 0px #b8956a",
+            borderRadius: "20px 25px 18px 22px",
+            boxShadow: "4px 4px 0px #d4a574, 8px 8px 0px #b8956a",
           }}
         >
-          <h1
-            className="text-4xl font-bold text-gray-900 mb-4 text-center transform rotate-[0.3deg]"
-            style={{
-              fontFamily: "Comic Sans MS, cursive, sans-serif",
-              textShadow: "2px 2px 0px #d4a574",
-            }}
-          >
-            Git Graph Visualization ✨
-          </h1>
-          <p
-            className="text-lg text-gray-700 text-center max-w-2xl mx-auto transform rotate-[-0.2deg]"
-            style={{
-              fontFamily: "Comic Sans MS, cursive, sans-serif",
-            }}
-          >
-            Hand-drawn style with organic, sketchy aesthetic 🎨
-          </p>
-        </div>
+          <div className="p-8">
+            {/* Git Graph Visualization */}
+            <div className="relative">
+              <svg width="800" height={80 + commits.length * 140 + 40} className="w-full">
+                <defs>
+                  <filter id="roughPaper" x="0%" y="0%" width="100%" height="100%">
+                    <feTurbulence baseFrequency="0.04" numOctaves="3" result="noise" />
+                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" />
+                  </filter>
+                  <filter id="sketchy" x="0%" y="0%" width="100%" height="100%">
+                    <feTurbulence baseFrequency="0.02" numOctaves="2" result="noise" />
+                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1" />
+                  </filter>
+                </defs>
 
-        {/* Tabs */}
-        <div className="flex justify-center mb-8">
-          <div
-            className="bg-white rounded-full p-3 transform rotate-[0.5deg] border-3 border-gray-800 shadow-lg"
-            style={{
-              borderRadius: "25px 30px 28px 22px",
-              boxShadow: "2px 2px 0px #d4a574",
-            }}
-          >
-            {tabs.map((tab, index) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-6 py-3 font-bold transition-all duration-300 border-2 border-gray-800 ${
-                  activeTab === tab.id
-                    ? "bg-yellow-300 text-gray-900 transform rotate-[-1deg] scale-105"
-                    : "bg-white text-gray-700 hover:bg-yellow-100 hover:transform hover:rotate-[0.5deg]"
-                }`}
-                style={{
-                  fontFamily: "Comic Sans MS, cursive, sans-serif",
-                  borderRadius:
-                    index === 0 ? "15px 20px 18px 16px" : index === 1 ? "18px 16px 20px 15px" : "20px 18px 16px 20px",
-                  marginRight: index < tabs.length - 1 ? "8px" : "0",
-                  boxShadow: activeTab === tab.id ? "2px 2px 0px #b8956a" : "1px 1px 0px #d4a574",
-                }}
-              >
-                {tab.name}
-              </button>
-            ))}
-          </div>
-        </div>
+                {/* Sketchy main branch line */}
+                <path
+                  d="M80,60 Q82,150 78,240 Q82,330 80,420 Q78,510 80,600 Q82,630 80,640"
+                  stroke="#2563eb"
+                  strokeWidth="4"
+                  fill="none"
+                  filter="url(#roughPaper)"
+                  strokeLinecap="round"
+                />
 
-        {/* Main Content */}
-        <div className="flex gap-8">
-          {/* Navigation */}
-          <div className="flex flex-col gap-4">
-            {navItems.map((item, index) => (
-              <button
-                key={item.id}
-                onClick={() => setActiveNav(item.id)}
-                className={`p-4 text-left transition-all duration-300 min-w-[160px] bg-white border-3 border-gray-800 font-bold ${
-                  activeNav === item.id
-                    ? "bg-pink-200 text-gray-900 transform rotate-[-1deg] scale-105"
-                    : "text-gray-700 hover:bg-blue-100 hover:transform hover:rotate-[0.5deg]"
-                }`}
-                style={{
-                  fontFamily: "Comic Sans MS, cursive, sans-serif",
-                  borderRadius: index === 0 ? "12px 18px 15px 20px" : "20px 15px 18px 12px",
-                  boxShadow: activeNav === item.id ? "3px 3px 0px #b8956a" : "2px 2px 0px #d4a574",
-                }}
-              >
-                <div className="font-bold">{item.name}</div>
-                <div className="text-sm opacity-70">{item.subtitle}</div>
-              </button>
-            ))}
-          </div>
+                {/* Sketchy feature branch line */}
+                <path
+                  d="M160,220 Q162,280 158,320 Q162,350 160,360"
+                  stroke="#059669"
+                  strokeWidth="4"
+                  fill="none"
+                  filter="url(#roughPaper)"
+                  strokeLinecap="round"
+                />
 
-          {/* Graph Container */}
-          <div
-            className="flex-1 bg-white rounded-lg border-3 border-gray-800 shadow-lg overflow-hidden transform rotate-[0.3deg]"
-            style={{
-              borderRadius: "20px 25px 18px 22px",
-              boxShadow: "4px 4px 0px #d4a574, 8px 8px 0px #b8956a",
-            }}
-          >
-            <div className="p-8">
-              <div
-                className="bg-blue-50 rounded-lg p-8 border-2 border-blue-300 transform rotate-[-0.2deg]"
-                style={{
-                  borderRadius: "15px 20px 18px 16px",
-                  boxShadow: "inset 2px 2px 0px #bfdbfe",
-                }}
-              >
-                {/* Git Graph Visualization */}
-                <div className="relative">
-                  <svg width="600" height="400" className="w-full">
-                    <defs>
-                      <filter id="roughPaper" x="0%" y="0%" width="100%" height="100%">
-                        <feTurbulence baseFrequency="0.04" numOctaves="3" result="noise" />
-                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="1" />
-                      </filter>
-                    </defs>
+                {/* Branch out path */}
+                <path
+                  d="M80,220 Q100,218 120,222 Q140,218 160,220"
+                  stroke="#059669"
+                  strokeWidth="3"
+                  fill="none"
+                  filter="url(#sketchy)"
+                  strokeLinecap="round"
+                  strokeDasharray={isLoading ? "5,5" : "0"}
+                  className="transition-all duration-1000 ease-out"
+                />
 
-                    {/* Sketchy branch line */}
-                    <path
-                      d="M50,50 Q52,100 48,150 Q52,200 50,250 Q48,300 50,350"
-                      stroke="#2563eb"
-                      strokeWidth="4"
-                      fill="none"
-                      filter="url(#roughPaper)"
-                      strokeLinecap="round"
-                    />
+                {/* Merge back path */}
+                <path
+                  d="M160,360 Q140,362 120,358 Q100,362 80,360"
+                  stroke="#059669"
+                  strokeWidth="3"
+                  fill="none"
+                  filter="url(#sketchy)"
+                  strokeLinecap="round"
+                />
 
-                    {/* Commits */}
-                    {[80, 140, 200, 260, 320].map((y, i) => (
-                      <g key={i}>
-                        {/* Sketchy commit circle */}
-                        <circle
-                          cx={50 + Math.sin(i) * 2}
-                          cy={y + Math.cos(i) * 2}
-                          r="14"
-                          fill="#fbbf24"
-                          stroke="#92400e"
-                          strokeWidth="3"
-                          filter="url(#roughPaper)"
-                          className="hover:fill-yellow-300 transition-colors cursor-pointer"
-                        />
-                        <circle cx={50 + Math.sin(i) * 2} cy={y + Math.cos(i) * 2} r="6" fill="#92400e" />
-                        {/* Sketchy text */}
-                        <text
-                          x="80"
-                          y={y + 5}
-                          className="text-sm font-bold fill-gray-800"
-                          style={{ fontFamily: "Comic Sans MS, cursive, sans-serif" }}
-                          transform={`rotate(${Math.sin(i) * 2} 80 ${y + 5})`}
-                        >
-                          Commit {i + 1}: Feature implementation ✏️
-                        </text>
-                      </g>
-                    ))}
-                  </svg>
-                </div>
+                {commits.map((commit, i) => {
+                  let x = 80 + Math.sin(i) * 3
+                  let y = 80 + i * 140 + Math.cos(i) * 2
+
+                  if (i === 1) {
+                    x = 160 + Math.sin(i) * 3
+                    y = 220 + Math.cos(i) * 2
+                  } else if (i === 2) {
+                    x = 80 + Math.sin(i) * 3
+                    y = 360 + Math.cos(i) * 2
+                  } else if (i === 3) {
+                    x = 80 + Math.sin(i) * 3
+                    y = 500 + Math.cos(i) * 2
+                  } else if (i === 4) {
+                    x = 80 + Math.sin(i) * 3
+                    y = 640 + Math.cos(i) * 2
+                  }
+
+                  return (
+                    <g key={commit.id}>
+                      <circle
+                        cx={x}
+                        cy={y}
+                        r="16"
+                        fill="#fbbf24"
+                        stroke="#92400e"
+                        strokeWidth="3"
+                        filter="url(#roughPaper)"
+                        className="hover:fill-yellow-300 transition-colors cursor-pointer"
+                      />
+                      <circle cx={x} cy={y} r="8" fill={i === 1 ? "#059669" : "#2563eb"} filter="url(#sketchy)" />
+                    </g>
+                  )
+                })}
+              </svg>
+
+              <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+                {commits.map((commit, i) => {
+                  let x = 120
+                  let y = 80 + i * 140
+
+                  if (i === 1) {
+                    x = 200
+                    y = 220
+                  } else if (i === 2) {
+                    x = 120
+                    y = 360
+                  } else if (i === 3) {
+                    x = 120
+                    y = 500
+                  } else if (i === 4) {
+                    x = 120
+                    y = 640
+                  }
+
+                  const getToolEmoji = (tool: string) => {
+                    switch (tool) {
+                      case "bash":
+                        return "💻"
+                      case "task":
+                        return "✅"
+                      case "read":
+                        return "📖"
+                      case "edit":
+                        return "✏️"
+                      case "create":
+                        return "➕"
+                      default:
+                        return "💻"
+                    }
+                  }
+
+                  return (
+                    <div
+                      key={`info-${commit.id}`}
+                      className="absolute pointer-events-auto"
+                      style={{
+                        left: `${x}px`,
+                        top: `${y - 30}px`,
+                        width: "600px",
+                        zIndex: 20,
+                      }}
+                    >
+                      <div
+                        className={`group relative bg-white p-4 border-3 border-gray-800 transition-all duration-300 hover:scale-[1.02] transform hover:rotate-[0.5deg] ${
+                          isLoading && i === 4 ? "animate-pulse bg-yellow-50" : ""
+                        }`}
+                        style={{
+                          fontFamily: "Comic Sans MS, cursive, sans-serif",
+                          borderRadius: `${15 + i}px ${20 + i}px ${18 + i}px ${16 + i}px`,
+                          boxShadow: "3px 3px 0px #d4a574, 6px 6px 0px #b8956a",
+                        }}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div
+                            className="flex-shrink-0 w-8 h-8 bg-yellow-200 rounded-lg flex items-center justify-center border-2 border-gray-800 text-lg"
+                            style={{
+                              borderRadius: "8px 12px 10px 6px",
+                              boxShadow: "2px 2px 0px #d4a574",
+                            }}
+                          >
+                            {isLoading && i === 4 ? "⏳" : getToolEmoji(commit.tool)}
+                          </div>
+
+                          <div className="flex-1 text-gray-900 font-bold text-lg">
+                            {isLoading && i === 4 ? (
+                              <div className="flex items-center gap-3">
+                                <span className="text-2xl animate-bounce">🔄</span>
+                                <span className="text-gray-700">Loading commit data...</span>
+                              </div>
+                            ) : (
+                              `${commit.message} ✨`
+                            )}
+                          </div>
+
+                          <div
+                            className="flex-shrink-0 text-xs text-gray-600 font-bold bg-blue-100 px-2 py-1 border-2 border-gray-800"
+                            style={{
+                              borderRadius: "6px 8px 7px 5px",
+                              boxShadow: "1px 1px 0px #d4a574",
+                            }}
+                          >
+                            {isLoading && i === 4 ? "..." : commit.time}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           </div>
